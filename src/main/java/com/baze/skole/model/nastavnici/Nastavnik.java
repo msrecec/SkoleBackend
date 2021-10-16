@@ -1,10 +1,13 @@
 package com.baze.skole.model.nastavnici;
 
+import com.baze.skole.model.izvrsitelji.Izvrsitelj;
+import com.baze.skole.model.kolegiji.Kolegij;
 import com.baze.skole.model.mjesta.Mjesto;
 import com.baze.skole.model.zupanije.Zupanija;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "nastavnici", schema = "public", uniqueConstraints = {
@@ -38,5 +41,8 @@ public class Nastavnik {
     private String lozinka;
     @ManyToOne
     private Mjesto mjestoPrebivalista;
-
+    @OneToMany(targetEntity = Izvrsitelj.class, mappedBy = "nastavnik")
+    List<Izvrsitelj> izvrsitelji;
+    @ManyToMany(targetEntity = Kolegij.class, mappedBy = "nastavnici")
+    private List<Kolegij> kolegiji;
 }

@@ -1,5 +1,7 @@
 package com.baze.skole.model.kolegiji;
 
+import com.baze.skole.model.izvrsitelji.Izvrsitelj;
+import com.baze.skole.model.nastavnici.Nastavnik;
 import com.baze.skole.model.ocjene.Ocjena;
 import com.baze.skole.model.smjerovi.Smjer;
 import com.baze.skole.model.studenti.Student;
@@ -33,4 +35,13 @@ public class Kolegij {
     List<Ocjena> ocjene;
     @ManyToMany(targetEntity = Student.class, mappedBy = "kolegiji")
     private List<Student> studenti;
+    @OneToMany(targetEntity = Izvrsitelj.class, mappedBy = "kolegij")
+    List<Izvrsitelj> izvrsitelji;
+    @ManyToMany(targetEntity = Nastavnik.class)
+    @JoinTable(
+            name="izvrsitelji",
+            joinColumns = {@JoinColumn(name = "id_kolegij")},
+            inverseJoinColumns = {@JoinColumn(name = "id_nastavnik")}
+    )
+    private List<Nastavnik> nastavnici;
 }
