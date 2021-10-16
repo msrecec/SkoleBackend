@@ -19,4 +19,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
     }
+    @ExceptionHandler(BadParamsException.class)
+    public ResponseEntity<ErrorMessage> badParamsException(BadParamsException exception, WebRequest request) {
+        ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+    }
 }

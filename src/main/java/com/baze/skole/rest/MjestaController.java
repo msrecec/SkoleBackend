@@ -2,6 +2,7 @@ package com.baze.skole.rest;
 
 import com.baze.skole.dto.mjesta.MjestoDTO;
 import com.baze.skole.dto.mjesta.MjestoDTOPaginated;
+import com.baze.skole.exception.BadParamsException;
 import com.baze.skole.exception.ResourceNotFoundException;
 import com.baze.skole.service.mjesta.MjestoService;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class MjestaController {
     }
 
     @GetMapping("/page")
-    ResponseEntity<MjestoDTOPaginated> findMjestoPaginated(@RequestParam(name = "page") Integer page, @RequestParam(name = "pageSize") Integer pageSize) throws ResourceNotFoundException {
+    ResponseEntity<MjestoDTOPaginated> findMjestoPaginated(@RequestParam(name = "page") Integer page, @RequestParam(name = "pageSize") Integer pageSize) throws ResourceNotFoundException, BadParamsException {
         return this.mjestoService.findByPage(page, pageSize).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 

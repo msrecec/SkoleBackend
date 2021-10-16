@@ -2,6 +2,7 @@ package com.baze.skole.service.mjesta;
 
 import com.baze.skole.dto.mjesta.MjestoDTO;
 import com.baze.skole.dto.mjesta.MjestoDTOPaginated;
+import com.baze.skole.exception.BadParamsException;
 import com.baze.skole.exception.ResourceNotFoundException;
 import com.baze.skole.mapping.mapper.mjesta.MjestaMapper;
 import com.baze.skole.model.mjesta.Mjesto;
@@ -36,10 +37,10 @@ public class MjestoServiceImpl implements MjestoService{
     }
 
     @Override
-    public Optional<MjestoDTOPaginated> findByPage(Integer page, Integer pageSize) throws ResourceNotFoundException {
+    public Optional<MjestoDTOPaginated> findByPage(Integer page, Integer pageSize) throws ResourceNotFoundException, BadParamsException {
 
         if(page < 0 || pageSize > 100) {
-            return Optional.empty();
+            throw new BadParamsException("bad url parameters provided");
         }
 
         PageRequest pageRequest = PageRequest.of(page, pageSize);
