@@ -1,9 +1,12 @@
 package com.baze.skole.model.kolegiji;
 
+import com.baze.skole.model.ocjene.Ocjena;
 import com.baze.skole.model.smjerovi.Smjer;
+import com.baze.skole.model.studenti.Student;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "kolegiji", schema = "public", uniqueConstraints = {
@@ -26,4 +29,8 @@ public class Kolegij {
     private String opis;
     @ManyToOne
     private Smjer smjer;
+    @OneToMany(targetEntity = Ocjena.class, mappedBy = "kolegij")
+    List<Ocjena> ocjene;
+    @ManyToMany(targetEntity = Student.class, mappedBy = "kolegiji")
+    private List<Student> studenti;
 }

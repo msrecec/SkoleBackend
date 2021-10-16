@@ -1,11 +1,14 @@
 package com.baze.skole.model.studenti;
 
 
+import com.baze.skole.model.kolegiji.Kolegij;
 import com.baze.skole.model.mjesta.Mjesto;
+import com.baze.skole.model.ocjene.Ocjena;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "studenti", schema = "public", uniqueConstraints = {
@@ -37,4 +40,13 @@ public class Student {
     @ManyToOne()
     @JoinColumn(name = "id_mjesto_stan", referencedColumnName = "id")
     private Mjesto mjestoStanovanja;
+    @OneToMany(targetEntity = Ocjena.class, mappedBy = "student")
+    List<Ocjena> ocjene;
+    @ManyToMany(targetEntity = Kolegij.class)
+    @JoinTable(
+            name = "ocjene",
+            joinColumns = {@JoinColumn(name = "id_student")},
+            inverseJoinColumns = {@JoinColumn(name = "id_kolegij")}
+    )
+    private List<Kolegij> kolegiji;
 }
