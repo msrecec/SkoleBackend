@@ -1,10 +1,12 @@
 package com.baze.skole.model.ustanove;
 
 import com.baze.skole.model.mjesta.Mjesto;
+import com.baze.skole.model.smjerovi.Smjer;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "ustanove", schema = "public", uniqueConstraints = {
@@ -34,5 +36,7 @@ public class Ustanova {
     private Date datumOsnutka;
     @ManyToOne
     private Mjesto mjesto;
+    @OneToMany(targetEntity = Smjer.class, mappedBy = "ustanova")
+    List<Smjer> smjerovi;
 
 }
