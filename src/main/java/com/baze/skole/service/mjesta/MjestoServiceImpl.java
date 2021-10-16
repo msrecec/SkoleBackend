@@ -32,8 +32,15 @@ public class MjestoServiceImpl implements MjestoService{
     }
 
     @Override
-    public List<MjestoDTO> findAll() {
-        return mjestaRepositoryJpa.findAll().stream().map(mapper::mapMjestoToDTO).collect(Collectors.toList());
+    public List<MjestoDTO> findAll() throws ResourceNotFoundException {
+
+        List<Mjesto> mjesta = mjestaRepositoryJpa.findAll();
+
+        if(mjesta.isEmpty()) {
+            throw new ResourceNotFoundException("mjesta were not found");
+        }
+
+        return mjesta.stream().map(mapper::mapMjestoToDTO).collect(Collectors.toList());
     }
 
     @Override

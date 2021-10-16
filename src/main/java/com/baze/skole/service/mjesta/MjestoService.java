@@ -10,6 +10,6 @@ import java.util.Optional;
 
 public interface MjestoService {
     Optional<MjestoDTO> findById(Long id);
-    List<MjestoDTO> findAll();
+    List<MjestoDTO> findAll() throws ResourceNotFoundException;
     Optional<MjestoDTOPaginated> findByPage(Integer page, Integer pageSize) throws ResourceNotFoundException, BadParamsException;
 }

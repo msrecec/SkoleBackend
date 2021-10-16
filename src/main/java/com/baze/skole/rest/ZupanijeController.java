@@ -1,6 +1,7 @@
 package com.baze.skole.rest;
 
 import com.baze.skole.dto.zupanije.ZupanijaDTO;
+import com.baze.skole.exception.ResourceNotFoundException;
 import com.baze.skole.service.zupanije.ZupanijeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class ZupanijeController {
     }
 
     @GetMapping
-    public List<ZupanijaDTO> findAllZupanije() {
+    public List<ZupanijaDTO> findAllZupanije() throws ResourceNotFoundException {
         return this.zupanijeService.findAll();
     }
 

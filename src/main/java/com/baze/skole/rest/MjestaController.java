@@ -22,7 +22,7 @@ public class MjestaController {
     }
 
     @GetMapping
-    List<MjestoDTO> findAllMjesta() {
+    List<MjestoDTO> findAllMjesta() throws ResourceNotFoundException {
         return this.mjestoService.findAll();
     }
 
