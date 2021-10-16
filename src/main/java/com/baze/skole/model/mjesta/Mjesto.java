@@ -1,6 +1,8 @@
 package com.baze.skole.model.mjesta;
 
+import com.baze.skole.model.nastavnici.Nastavnik;
 import com.baze.skole.model.studenti.Student;
+import com.baze.skole.model.ustanove.Ustanova;
 import com.baze.skole.model.zupanije.Zupanija;
 import lombok.*;
 
@@ -33,4 +35,8 @@ public class Mjesto {
     List<Student> studentiPrebivalista;
     @OneToMany(targetEntity = Student.class, mappedBy = "mjestoStanovanja")
     List<Student> studentiStanovanja;
+    @OneToMany(targetEntity = Nastavnik.class, mappedBy = "mjestoPrebivalista")
+    List<Nastavnik> nastavniciPrebivalista;
+    @OneToMany(targetEntity = Ustanova.class, mappedBy = "mjesto")
+    List<Ustanova> ustanove;
 }
