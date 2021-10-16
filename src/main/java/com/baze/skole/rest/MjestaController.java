@@ -1,6 +1,8 @@
 package com.baze.skole.rest;
 
 import com.baze.skole.dto.mjesta.MjestoDTO;
+import com.baze.skole.dto.mjesta.MjestoDTOPaginated;
+import com.baze.skole.exception.ResourceNotFoundException;
 import com.baze.skole.service.mjesta.MjestoService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +30,11 @@ public class MjestaController {
         return this.mjestoService
                 .findById(id).map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/page")
+    ResponseEntity<MjestoDTOPaginated> findMjestoPaginated(@RequestParam(name = "page") Integer page, @RequestParam(name = "pageSize") Integer pageSize) throws ResourceNotFoundException {
+        return this.mjestoService.findByPage(page, pageSize).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 }

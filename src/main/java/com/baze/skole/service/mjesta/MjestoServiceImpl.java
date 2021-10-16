@@ -1,9 +1,13 @@
 package com.baze.skole.service.mjesta;
 
 import com.baze.skole.dto.mjesta.MjestoDTO;
+import com.baze.skole.dto.mjesta.MjestoDTOPaginated;
+import com.baze.skole.exception.ResourceNotFoundException;
 import com.baze.skole.mapping.mapper.mjesta.MjestaMapper;
+import com.baze.skole.model.mjesta.Mjesto;
 import com.baze.skole.repository.mjesta.MjestaRepositoryJpa;
 import com.baze.skole.repository.zupanije.ZupanijeRepositoryJpa;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,5 +33,27 @@ public class MjestoServiceImpl implements MjestoService{
     @Override
     public List<MjestoDTO> findAll() {
         return mjestaRepositoryJpa.findAll().stream().map(mapper::mapMjestoToDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<MjestoDTOPaginated> findByPage(Integer page, Integer pageSize) throws ResourceNotFoundException {
+
+        if(page < 0 || pageSize > 100) {
+            return Optional.empty();
+        }
+
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
+
+        List<Mjesto> mjesta = mjestaRepositoryJpa.findAll(pageRequest).getContent();
+
+        if(mjesta.size() == 0) {
+            throw new ResourceNotFoundException("mjesta paginated were not found");
+        }
+
+        long totalPages = mjestaRepositoryJpa.findAll(pageRequest).getTotalPages();
+
+        long totalElements = mjestaRepositoryJpa.findAll(pageRequest).getTotalElements();
+
+        return Optional.of(new MjestoDTOPaginated(mjesta.stream().map(mapper::mapMjestoToDTO).collect(Collectors.toList()), totalPages, totalElements));
     }
 }
