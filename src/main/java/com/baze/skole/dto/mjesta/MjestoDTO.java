@@ -11,7 +11,7 @@ import lombok.*;
 @Builder
 public class MjestoDTO {
     private Long id;
-    private String postBr;
+    private Integer postBr;
     private String nazivMjesta;
     private ZupanijaDTO zupanija;
 }

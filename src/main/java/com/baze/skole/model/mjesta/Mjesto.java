@@ -26,7 +26,7 @@ public class Mjesto {
     @Id
     private Long id;
     @Column(name = "postbr")
-    private String postBr;
+    private Integer postBr;
     @Column(name = "naziv_mjesto")
     private String nazivMjesta;
     @ManyToOne

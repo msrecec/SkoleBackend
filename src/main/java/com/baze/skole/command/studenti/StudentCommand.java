@@ -33,12 +33,8 @@ public class StudentCommand {
     @NotNull(message = "student datum upisa must not be null")
     private Date datumUpisa;
     @NotNull(message = "postBrPrebivalista must not be null")
-    @NotBlank(message = "postBrPrebivalista must not be blank")
-    @Size(min = 11, max = 11, message = "postBrPrebivalista must be 11 characters long")
-    private String postBrPrebivalista;
+    private Integer postBrPrebivalista;
     @NotNull(message = "postBrStanovanja must not be null")
-    @NotBlank(message = "postBrStanovanja must not be blank")
-    @Size(min = 11, max = 11, message = "postBrStanovanja must be 11 characters long")
-    private String postBrStanovanja;
+    private Integer postBrStanovanja;
 
 }

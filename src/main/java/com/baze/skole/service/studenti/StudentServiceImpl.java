@@ -82,17 +82,17 @@ public class StudentServiceImpl implements StudentService {
                 .datumUpisa(command.getDatumUpisa())
                 .build();
 
-        Optional<Mjesto> mjestoPrebivalista = mjestaRepositoryJpa.findMjestoByPostbr(command.getPostBrPrebivalista());
+        List<Mjesto> mjestaPrebivalista = mjestaRepositoryJpa.findMjestoByPostbr(command.getPostBrPrebivalista());
 
-        Optional<Mjesto> mjestoStanovanja = mjestaRepositoryJpa.findMjestoByPostbr(command.getPostBrStanovanja());
+        List<Mjesto> mjestaStanovanja = mjestaRepositoryJpa.findMjestoByPostbr(command.getPostBrStanovanja());
 
-        if(mjestoPrebivalista.isEmpty() || mjestoStanovanja.isEmpty()) {
+        if(mjestaPrebivalista.isEmpty() || mjestaStanovanja.isEmpty()) {
             throw new ResourceNotFoundException(ErrorMessageConstants.RESOURCE_NOT_FOUND.getMessage());
         }
 
-        student.setMjestoPrebivalista(mjestoPrebivalista.get());
+        student.setMjestoPrebivalista(mjestaPrebivalista.get(0));
 
-        student.setMjestoStanovanja(mjestoStanovanja.get());
+        student.setMjestoStanovanja(mjestaStanovanja.get(0));
 
         student = studentRepositoryJpa.save(student);
 
