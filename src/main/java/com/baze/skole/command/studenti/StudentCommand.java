@@ -17,7 +17,7 @@ import java.util.Date;
 public class StudentCommand {
 
     @PositiveOrZero(message = "student id must be a positive number or zero")
-    private Integer id;
+    private Long id;
     @NotNull(message = "student jmbag must not be null")
     @NotBlank(message = "stutent jmbag must not be blank")
     @Size(min = 10, max = 10, message = "student jmbag must be 10 characters long")

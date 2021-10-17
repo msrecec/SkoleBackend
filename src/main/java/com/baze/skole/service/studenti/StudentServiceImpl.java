@@ -102,4 +102,39 @@ public class StudentServiceImpl implements StudentService {
 
         return Optional.of(studentMapper.mapStudentToDTO(student));
     }
+
+    @Override
+    public Optional<StudentDTO> update(StudentCommand command) throws ResourceNotFoundException, InternalServerError {
+
+        Optional<Student> student = studentRepositoryJpa.findById(command.getId());
+
+        if(student.isEmpty()) {
+            throw new ResourceNotFoundException(ErrorMessageConstants.RESOURCE_NOT_FOUND.getMessage());
+        }
+
+        student.get().setJmbag(command.getJmbag());
+        student.get().setIme(command.getIme());
+        student.get().setPrezime(command.getPrezime());
+        student.get().setDatumUpisa(command.getDatumUpisa());
+
+        List<Mjesto> mjestaPrebivalista = mjestaRepositoryJpa.findMjestoByPostbr(command.getPostBrPrebivalista());
+
+        List<Mjesto> mjestaStanovanja = mjestaRepositoryJpa.findMjestoByPostbr(command.getPostBrStanovanja());
+
+        if(mjestaPrebivalista.isEmpty() || mjestaStanovanja.isEmpty()) {
+            throw new ResourceNotFoundException(ErrorMessageConstants.RESOURCE_NOT_FOUND.getMessage());
+        }
+
+        student.get().setMjestoPrebivalista(mjestaPrebivalista.get(0));
+
+        student.get().setMjestoStanovanja(mjestaStanovanja.get(0));
+
+        student = Optional.ofNullable(studentRepositoryJpa.save(student.get()));
+
+        if(student.isEmpty()) {
+            throw new InternalServerError(ErrorMessageConstants.INTERNAL_SERVER_ERROR.getMessage());
+        }
+
+        return student.map(studentMapper::mapStudentToDTO);
+    }
 }

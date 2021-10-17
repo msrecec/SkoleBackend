@@ -58,5 +58,19 @@ public class StudentController {
                 );
     }
 
+    @PutMapping
+    public ResponseEntity<StudentDTO> update(@Valid @RequestBody final StudentCommand command) throws ResourceNotFoundException, InternalServerError {
+        return this.studentService.update(command)
+                .map(
+                        studentDTO -> ResponseEntity
+                                .status(HttpStatus.OK)
+                                .body(studentDTO)
+                ).orElseGet(
+                        () -> ResponseEntity
+                                .status(HttpStatus.CONFLICT)
+                                .build()
+                );
+    }
+
 
 }
