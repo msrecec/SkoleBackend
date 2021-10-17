@@ -40,6 +40,7 @@ public class Nastavnik {
     @Column(name="lozinka")
     private String lozinka;
     @ManyToOne
+    @JoinColumn(name = "id_mjesta", referencedColumnName = "id")
     private Mjesto mjestoPrebivalista;
     @OneToMany(targetEntity = Izvrsitelj.class, mappedBy = "nastavnik")
     List<Izvrsitelj> izvrsitelji;
