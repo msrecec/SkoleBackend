@@ -25,7 +25,7 @@ public class StudentServiceImpl implements StudentService {
     private final StudentRepositoryJpa studentRepositoryJpa;
     private final MjestaRepositoryJpa mjestaRepositoryJpa;
     private final StudentMapper studentMapper;
-    private final Integer MAXIMUM_PAGE_SIZE = 100;
+    private static final Integer MAXIMUM_PAGE_SIZE = 100;
 
     public StudentServiceImpl(StudentRepositoryJpa studentRepositoryJpa, MjestaRepositoryJpa mjestaRepositoryJpa, StudentMapper studentMapper) {
         this.studentRepositoryJpa = studentRepositoryJpa;
