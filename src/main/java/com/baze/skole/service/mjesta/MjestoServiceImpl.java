@@ -5,6 +5,7 @@ import com.baze.skole.dto.mjesta.MjestoDTOPaginated;
 import com.baze.skole.exception.BadParamsException;
 import com.baze.skole.exception.ResourceNotFoundException;
 import com.baze.skole.mapping.mapper.mjesta.MjestaMapper;
+import com.baze.skole.model.error.ErrorMessageConstants;
 import com.baze.skole.model.mjesta.Mjesto;
 import com.baze.skole.repository.mjesta.MjestaRepositoryJpa;
 import com.baze.skole.repository.zupanije.ZupanijeRepositoryJpa;
@@ -20,6 +21,7 @@ public class MjestoServiceImpl implements MjestoService{
 
     private MjestaRepositoryJpa mjestaRepositoryJpa;
     private MjestaMapper mapper;
+    private final Integer MAXIMUM_PAGE_SIZE = 100;
 
     public MjestoServiceImpl(MjestaRepositoryJpa mjestaRepositoryJpa, MjestaMapper mapper) {
         this.mjestaRepositoryJpa = mjestaRepositoryJpa;
@@ -37,7 +39,7 @@ public class MjestoServiceImpl implements MjestoService{
         List<Mjesto> mjesta = mjestaRepositoryJpa.findAll();
 
         if(mjesta.isEmpty()) {
-            throw new ResourceNotFoundException("mjesta were not found");
+            throw new ResourceNotFoundException(ErrorMessageConstants.RESOURCE_NOT_FOUND.getMessage());
         }
 
         return mjesta.stream().map(mapper::mapMjestoToDTO).collect(Collectors.toList());
@@ -46,8 +48,8 @@ public class MjestoServiceImpl implements MjestoService{
     @Override
     public Optional<MjestoDTOPaginated> findByPage(Integer page, Integer pageSize) throws ResourceNotFoundException, BadParamsException {
 
-        if(page < 0 || pageSize > 100) {
-            throw new BadParamsException("bad url parameters provided");
+        if(page < 0 || pageSize > MAXIMUM_PAGE_SIZE) {
+            throw new BadParamsException(ErrorMessageConstants.BAD_PARAMS.getMessage());
         }
 
         PageRequest pageRequest = PageRequest.of(page, pageSize);
@@ -55,7 +57,7 @@ public class MjestoServiceImpl implements MjestoService{
         List<Mjesto> mjesta = mjestaRepositoryJpa.findAll(pageRequest).getContent();
 
         if(mjesta.size() == 0) {
-            throw new ResourceNotFoundException("mjesta paginated were not found");
+            throw new ResourceNotFoundException(ErrorMessageConstants.RESOURCE_NOT_FOUND.getMessage());
         }
 
         long totalPages = mjestaRepositoryJpa.findAll(pageRequest).getTotalPages();

@@ -18,11 +18,10 @@ public class MjestaMapperImpl implements MjestaMapper{
     @Override
     public MjestoDTO mapMjestoToDTO(Mjesto mjesto) {
 
-        if(mjesto.getZupanija() != null) {
-            return new MjestoDTO(mjesto.getId(), mjesto.getPostBr(), mjesto.getNazivMjesta(), zupanijeMapper.mapZupanijaToDTO(mjesto.getZupanija()));
-        }
-
-        return new MjestoDTO(mjesto.getId(), mjesto.getPostBr(), mjesto.getNazivMjesta(), null);
+        return new MjestoDTO(mjesto.getId(),
+                mjesto.getPostBr(),
+                mjesto.getNazivMjesta(),
+                Optional.of(mjesto.getZupanija()).map(zupanijeMapper::mapZupanijaToDTO).get());
 
     }
 }

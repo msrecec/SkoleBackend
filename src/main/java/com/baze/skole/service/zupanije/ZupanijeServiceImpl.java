@@ -3,6 +3,7 @@ package com.baze.skole.service.zupanije;
 import com.baze.skole.dto.zupanije.ZupanijaDTO;
 import com.baze.skole.exception.ResourceNotFoundException;
 import com.baze.skole.mapping.mapper.zupanije.ZupanijeMapper;
+import com.baze.skole.model.error.ErrorMessageConstants;
 import com.baze.skole.model.zupanije.Zupanija;
 import com.baze.skole.repository.zupanije.ZupanijeRepositoryJpa;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class ZupanijeServiceImpl implements ZupanijeService{
         List<Zupanija> zupanije = zupanijeRepositoryJpa.findAll();
 
         if(zupanije.isEmpty()) {
-            throw new ResourceNotFoundException("zupanije were not found");
+            throw new ResourceNotFoundException(ErrorMessageConstants.RESOURCE_NOT_FOUND.getMessage());
         }
 
         return zupanije.stream().map(mapper::mapZupanijaToDTO).collect(Collectors.toList());
