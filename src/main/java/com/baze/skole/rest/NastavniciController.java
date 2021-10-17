@@ -1,13 +1,16 @@
 package com.baze.skole.rest;
 
+import com.baze.skole.command.nastavnici.NastavnikCommand;
 import com.baze.skole.dto.nastavnici.NastavnikDTO;
 import com.baze.skole.dto.nastavnici.NastavnikDTOPaginated;
 import com.baze.skole.exception.BadParamsException;
+import com.baze.skole.exception.InternalServerError;
 import com.baze.skole.exception.ResourceNotFoundException;
 import com.baze.skole.service.nastavnici.NastavnikService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -37,6 +40,20 @@ public class NastavniciController {
         return this.nastavnikService.findByPage(page, pageSize).map(ResponseEntity::ok).orElseGet(
                 () -> ResponseEntity.notFound().build()
         );
+    }
+
+    @PostMapping
+    ResponseEntity<NastavnikDTO> save(@Valid @RequestBody NastavnikCommand command) throws ResourceNotFoundException, InternalServerError {
+        return this.nastavnikService.save(command)
+                .map(nastavnikDTO ->ResponseEntity.ok().body(nastavnikDTO))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PutMapping
+    ResponseEntity<NastavnikDTO> update(@Valid @RequestBody NastavnikCommand command) throws ResourceNotFoundException {
+        return this.nastavnikService.update(command)
+                .map(nastavnikDTO ->ResponseEntity.ok().body(nastavnikDTO))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 }
