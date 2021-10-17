@@ -1,13 +1,17 @@
 package com.baze.skole.rest;
 
+import com.baze.skole.command.studenti.StudentCommand;
 import com.baze.skole.dto.studenti.StudentDTO;
 import com.baze.skole.dto.studenti.StudentDTOPaginated;
 import com.baze.skole.exception.BadParamsException;
+import com.baze.skole.exception.InternalServerError;
 import com.baze.skole.exception.ResourceNotFoundException;
 import com.baze.skole.service.studenti.StudentService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -37,6 +41,21 @@ public class StudentController {
     public ResponseEntity<StudentDTOPaginated> findStudentByPage(@RequestParam(name = "page") final Integer page,
                                                                  @RequestParam(name = "pageSize") final Integer pageSize) throws BadParamsException, ResourceNotFoundException {
         return this.studentService.findByPage(page, pageSize).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public ResponseEntity<StudentDTO> save(@Valid @RequestBody final StudentCommand command) throws ResourceNotFoundException, InternalServerError {
+        return studentService.save(command)
+                .map(
+                        studentDTO -> ResponseEntity
+                                .status(HttpStatus.CREATED)
+                                .body(studentDTO)
+                )
+                .orElseGet(
+                        () -> ResponseEntity
+                                .status(HttpStatus.CONFLICT)
+                                .build()
+                );
     }
 
 

@@ -25,4 +25,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
     }
+    @ExceptionHandler(InternalServerError.class)
+    public ResponseEntity<ErrorMessage> internalServerError(InternalServerError exception, WebRequest request) {
+        ErrorMessage message = new ErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(message);
+    }
 }
