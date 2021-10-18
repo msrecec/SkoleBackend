@@ -15,11 +15,13 @@ import com.baze.skole.repository.nastavnici.NastavniciRepositoryJpa;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class NastavnikServiceImpl implements NastavnikService{
 
     private final NastavniciRepositoryJpa nastavniciRepositoryJpa;

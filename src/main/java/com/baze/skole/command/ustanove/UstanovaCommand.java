@@ -33,5 +33,5 @@ public class UstanovaCommand {
     private Date datumOsnutka;
     @NotNull(message = "ustanova postbr must not be null")
     @NotBlank(message = "ustanova postbr must not be blank")
-    private String postbr;
+    private Integer postbr;
 }
