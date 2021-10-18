@@ -2,6 +2,8 @@ package com.baze.skole.service.ustanove;
 
 import com.baze.skole.command.ustanove.UstanovaCommand;
 import com.baze.skole.dto.ustanove.UstanovaDTO;
+import com.baze.skole.dto.ustanove.UstanovaDTOPaginated;
+import com.baze.skole.exception.BadParamsException;
 import com.baze.skole.exception.InternalServerError;
 import com.baze.skole.exception.ResourceNotFoundException;
 
@@ -13,4 +15,5 @@ public interface UstanovaService {
     Optional<UstanovaDTO> findById(Long id) throws ResourceNotFoundException;
     Optional<UstanovaDTO> save(UstanovaCommand command) throws ResourceNotFoundException, InternalServerError;
     Optional<UstanovaDTO> update(UstanovaCommand command) throws ResourceNotFoundException, InternalServerError;
+    Optional<UstanovaDTOPaginated> findByPage(Integer page, Integer pageSize) throws BadParamsException, ResourceNotFoundException;
 }

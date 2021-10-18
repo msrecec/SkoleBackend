@@ -2,6 +2,8 @@ package com.baze.skole.service.ustanove;
 
 import com.baze.skole.command.ustanove.UstanovaCommand;
 import com.baze.skole.dto.ustanove.UstanovaDTO;
+import com.baze.skole.dto.ustanove.UstanovaDTOPaginated;
+import com.baze.skole.exception.BadParamsException;
 import com.baze.skole.exception.InternalServerError;
 import com.baze.skole.exception.ResourceNotFoundException;
 import com.baze.skole.mapping.mapper.ustanove.UstanoveMapper;
@@ -9,6 +11,7 @@ import com.baze.skole.model.mjesta.Mjesto;
 import com.baze.skole.model.ustanove.Ustanova;
 import com.baze.skole.repository.mjesta.MjestaRepositoryJpa;
 import com.baze.skole.repository.ustanove.UstanoveRepositoryJpa;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -53,6 +56,28 @@ public class UstanovaServiceImpl implements UstanovaService {
         }
 
         return ustanova.map(ustanoveMapper::mapUstanovaToDTO);
+    }
+
+    @Override
+    public Optional<UstanovaDTOPaginated> findByPage(Integer page, Integer pageSize) throws BadParamsException, ResourceNotFoundException {
+
+        if(page < 0 || pageSize > 100) {
+            throw new BadParamsException("page should not be smaller than 0 and pageSize should not be larger than 100");
+        }
+
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
+
+        List<Ustanova> ustanove = ustanoveRepositoryJpa.findAll(pageRequest).getContent();
+
+        if(ustanove.isEmpty()) {
+            throw new ResourceNotFoundException("ustanove were not found");
+        }
+
+        long totalPages = ustanoveRepositoryJpa.findAll(pageRequest).getTotalPages();
+
+        long totalElements = ustanoveRepositoryJpa.findAll(pageRequest).getTotalElements();
+
+        return Optional.of(new UstanovaDTOPaginated(ustanove.stream().map(ustanoveMapper::mapUstanovaToDTO).collect(Collectors.toList()), totalPages, totalElements));
     }
 
     @Override
