@@ -1,13 +1,17 @@
 package com.baze.skole.rest;
 
+import com.baze.skole.command.ustanove.UstanovaCommand;
 import com.baze.skole.dto.ustanove.UstanovaDTO;
 import com.baze.skole.dto.ustanove.UstanovaDTOPaginated;
 import com.baze.skole.exception.BadParamsException;
+import com.baze.skole.exception.InternalServerError;
 import com.baze.skole.exception.ResourceNotFoundException;
 import com.baze.skole.service.ustanove.UstanovaService;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -37,6 +41,20 @@ public class UstanovaController {
     ResponseEntity<UstanovaDTOPaginated> findUstanovaByPage(@RequestParam(name = "page") Integer page, @RequestParam(name = "pageSize") Integer pageSize) throws BadParamsException, ResourceNotFoundException {
         return this.ustanovaService.findByPage(page, pageSize)
                 .map(ustanovaDTOPaginated -> ResponseEntity.ok().body(ustanovaDTOPaginated))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    ResponseEntity<UstanovaDTO> saveUstanova(@Valid @RequestBody UstanovaCommand command) throws ResourceNotFoundException, InternalServerError {
+        return this.ustanovaService.save(command)
+                .map(ustanovaDTO -> ResponseEntity.ok().body(ustanovaDTO))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PutMapping
+    ResponseEntity<UstanovaDTO> updateUstanova(@Valid @RequestBody UstanovaCommand command) throws ResourceNotFoundException, InternalServerError {
+        return this.ustanovaService.save(command)
+                .map(ustanovaDTO -> ResponseEntity.ok().body(ustanovaDTO))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

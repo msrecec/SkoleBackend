@@ -92,7 +92,7 @@ public class UstanovaServiceImpl implements UstanovaService {
         Ustanova ustanova = Ustanova.builder()
                 .oib(command.getOib())
                 .naziv(command.getNaziv())
-                .zRacun(command.getZRacun())
+                .ziroRacun(command.getZiroRacun())
                 .adresa(command.getAdresa())
                 .datumOsnutka(command.getDatumOsnutka())
                 .mjesto(mjesto.get(0))
@@ -124,7 +124,7 @@ public class UstanovaServiceImpl implements UstanovaService {
 
         ustanova.get().setOib(command.getOib());
         ustanova.get().setNaziv(command.getNaziv());
-        ustanova.get().setZRacun(command.getZRacun());
+        ustanova.get().setZiroRacun(command.getZiroRacun());
         ustanova.get().setAdresa(command.getAdresa());
         ustanova.get().setDatumOsnutka(command.getDatumOsnutka());
         ustanova.get().setMjesto(mjesto.get(0));

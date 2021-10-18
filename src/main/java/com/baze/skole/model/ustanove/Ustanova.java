@@ -29,7 +29,7 @@ public class Ustanova {
     @Column(name = "naziv")
     private String naziv;
     @Column(name = "z_racun")
-    private String zRacun;
+    private String ziroRacun;
     @Column(name = "adresa")
     private String adresa;
     @Column(name = "datum_osnutka")

@@ -23,7 +23,7 @@ public class UstanoveMapperImpl implements UstanoveMapper{
                 .oib(ustanova.getOib())
                 .adresa(ustanova.getAdresa())
                 .naziv(ustanova.getNaziv())
-                .zRacun(ustanova.getZRacun())
+                .ziroRacun(ustanova.getZiroRacun())
                 .datumOsnutka(ustanova.getDatumOsnutka())
                 .mjesto(Optional.ofNullable(ustanova.getMjesto()).map(mapper::mapMjestoToDTO).get())
                 .build();

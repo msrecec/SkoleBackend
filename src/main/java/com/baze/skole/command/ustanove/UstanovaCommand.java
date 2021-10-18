@@ -14,7 +14,6 @@ import java.util.Date;
 @Builder
 @ToString
 public class UstanovaCommand {
-    @NotNull(message = "ustanova id must not be null")
     @PositiveOrZero(message = "ustanova id must be a positive number or zero")
     private Long id;
     @NotNull(message = "ustanova oib must not be null")
@@ -25,13 +24,12 @@ public class UstanovaCommand {
     private String naziv;
     @NotNull(message = "ustanova zRacun must not be null")
     @NotBlank(message = "ustanova zRacun must not be blank")
-    private String zRacun;
+    private String ziroRacun;
     @NotNull(message = "ustanova adresa must not be null")
     @NotBlank(message = "ustanova adresa must not be blank")
     private String adresa;
     @NotNull(message = "ustanova datum osnutka must not be null")
     private Date datumOsnutka;
     @NotNull(message = "ustanova postbr must not be null")
-    @NotBlank(message = "ustanova postbr must not be blank")
     private Integer postbr;
 }
