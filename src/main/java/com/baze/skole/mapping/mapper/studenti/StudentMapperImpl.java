@@ -25,7 +25,7 @@ public class StudentMapperImpl implements StudentMapper{
                 student.getIme(),
                 student.getPrezime(),
                 student.getDatumUpisa(),
-                Optional.of(student.getMjestoPrebivalista()).map(mapper::mapMjestoToDTO).get(),
-                Optional.of(student.getMjestoStanovanja()).map(mapper::mapMjestoToDTO).get());
+                Optional.ofNullable(student.getMjestoPrebivalista()).map(mapper::mapMjestoToDTO).get(),
+                Optional.ofNullable(student.getMjestoStanovanja()).map(mapper::mapMjestoToDTO).get());
     }
 }

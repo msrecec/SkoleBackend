@@ -21,7 +21,7 @@ public class MjestaMapperImpl implements MjestaMapper{
         return new MjestoDTO(mjesto.getId(),
                 mjesto.getPostBr(),
                 mjesto.getNazivMjesta(),
-                Optional.of(mjesto.getZupanija()).map(zupanijeMapper::mapZupanijaToDTO).get());
+                Optional.ofNullable(mjesto.getZupanija()).map(zupanijeMapper::mapZupanijaToDTO).get());
 
     }
 }
