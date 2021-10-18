@@ -29,7 +29,8 @@ public class Mjesto {
     private Integer postBr;
     @Column(name = "naziv_mjesto")
     private String nazivMjesta;
-    @ManyToOne
+    @ManyToOne()
+    @JoinColumn(name = "zupanija_id", referencedColumnName = "id")
     private Zupanija zupanija;
     @OneToMany(targetEntity = Student.class, mappedBy = "mjestoPrebivalista")
     List<Student> studentiPrebivalista;

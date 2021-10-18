@@ -22,10 +22,13 @@ public class Izvrsitelj {
     @Column(name = "id")
     @Id
     private Long id;
-    @ManyToOne
+    @ManyToOne()
+    @JoinColumn(name = "id_nastavnik", referencedColumnName = "id")
     private Nastavnik nastavnik;
-    @ManyToOne
+    @ManyToOne()
+    @JoinColumn(name = "id_kolegij", referencedColumnName = "id")
     private Kolegij kolegij;
-    @ManyToOne
+    @ManyToOne()
+    @JoinColumn(name = "id_uloga_izvrsitelja", referencedColumnName = "id")
     private UlogaIzvrsitelja ulogaIzvrsitelja;
 }

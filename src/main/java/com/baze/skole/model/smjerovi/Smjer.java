@@ -24,7 +24,8 @@ public class Smjer {
     private Long id;
     @Column(name = "naziv")
     private String naziv;
-    @ManyToOne
+    @ManyToOne()
+    @JoinColumn(name = "id_ustanova", referencedColumnName = "id")
     private Ustanova ustanova;
     @OneToMany(targetEntity = Kolegij.class, mappedBy = "smjer")
     List<Kolegij> kolegiji;

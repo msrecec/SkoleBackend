@@ -29,7 +29,8 @@ public class Kolegij {
     private String naziv;
     @Column(name = "opis")
     private String opis;
-    @ManyToOne
+    @ManyToOne()
+    @JoinColumn(name = "id_smjer", referencedColumnName = "id")
     private Smjer smjer;
     @OneToMany(targetEntity = Ocjena.class, mappedBy = "kolegij")
     List<Ocjena> ocjene;

@@ -29,8 +29,10 @@ public class Ocjena {
     private LocalDateTime vrijemePolaganja;
     @Column(name = "ocjena")
     private Integer ocjena;
-    @ManyToOne
+    @ManyToOne()
+    @JoinColumn(name = "id_student", referencedColumnName = "id")
     private Student student;
-    @ManyToOne
+    @ManyToOne()
+    @JoinColumn(name = "id_kolegij", referencedColumnName = "id")
     private Kolegij kolegij;
 }

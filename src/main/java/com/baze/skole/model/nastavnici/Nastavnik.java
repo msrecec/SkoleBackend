@@ -39,7 +39,7 @@ public class Nastavnik {
     private String titulaIza;
     @Column(name="lozinka")
     private String lozinka;
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "id_mjesta", referencedColumnName = "id")
     private Mjesto mjestoPrebivalista;
     @OneToMany(targetEntity = Izvrsitelj.class, mappedBy = "nastavnik")
