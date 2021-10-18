@@ -7,6 +7,7 @@ import com.baze.skole.exception.BadParamsException;
 import com.baze.skole.exception.InternalServerError;
 import com.baze.skole.exception.ResourceNotFoundException;
 import com.baze.skole.service.studenti.StudentService;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -70,6 +71,11 @@ public class StudentController {
                                 .status(HttpStatus.CONFLICT)
                                 .build()
                 );
+    }
+
+    @GetMapping("/kolegiji")
+    List<StudentDTO> findStudentByIdKolegij(@RequestParam(name = "idKolegij") Long idKolegij) throws ResourceNotFoundException {
+        return this.studentService.findStudentiByIdKolegij(idKolegij);
     }
 
 

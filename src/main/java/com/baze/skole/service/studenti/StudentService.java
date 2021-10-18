@@ -16,4 +16,5 @@ public interface StudentService {
     Optional<StudentDTOPaginated> findByPage(Integer page, Integer pageSize) throws BadParamsException, ResourceNotFoundException;
     Optional<StudentDTO> save(StudentCommand command) throws ResourceNotFoundException, InternalServerError;
     Optional<StudentDTO> update(StudentCommand command) throws ResourceNotFoundException, InternalServerError;
+    List<StudentDTO> findStudentiByIdKolegij(Long idKolegij) throws ResourceNotFoundException;
 }

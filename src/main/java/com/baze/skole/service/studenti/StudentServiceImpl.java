@@ -139,4 +139,16 @@ public class StudentServiceImpl implements StudentService {
 
         return student.map(studentMapper::mapStudentToDTO);
     }
+
+    @Override
+    public List<StudentDTO> findStudentiByIdKolegij(Long idKolegij) throws ResourceNotFoundException {
+
+        List<Student> studenti = studentRepositoryJpa.findStudentByIdKolegij(idKolegij);
+
+        if(studenti.isEmpty()) {
+            throw new ResourceNotFoundException("studenti resource was not found");
+        }
+
+        return studenti.stream().map(studentMapper::mapStudentToDTO).collect(Collectors.toList());
+    }
 }
