@@ -34,7 +34,8 @@ public class Ustanova {
     private String adresa;
     @Column(name = "datum_osnutka")
     private Date datumOsnutka;
-    @ManyToOne
+    @ManyToOne()
+    @JoinColumn(name = "id_mjesto", referencedColumnName = "id")
     private Mjesto mjesto;
     @OneToMany(targetEntity = Smjer.class, mappedBy = "ustanova")
     List<Smjer> smjerovi;
