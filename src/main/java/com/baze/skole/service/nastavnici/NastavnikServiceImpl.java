@@ -124,4 +124,16 @@ public class NastavnikServiceImpl implements NastavnikService{
 
         return Optional.of(nastavniciMapper.mapNastavnikToDTO(nastavnik.get()));
     }
+
+    @Override
+    public List<NastavnikDTO> findByIdKolegij(Long idKolegij) throws ResourceNotFoundException {
+
+        List<Nastavnik> nastavnici = nastavniciRepositoryJpa.findNastavnikByIdKolegij(idKolegij);
+
+        if(nastavnici.isEmpty()) {
+            throw new ResourceNotFoundException("nastavnici resource was not found");
+        }
+
+        return nastavnici.stream().map(nastavniciMapper::mapNastavnikToDTO).collect(Collectors.toList());
+    }
 }

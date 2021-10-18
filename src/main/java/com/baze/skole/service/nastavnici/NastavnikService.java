@@ -16,4 +16,5 @@ public interface NastavnikService {
     Optional<NastavnikDTOPaginated> findByPage(Integer page, Integer pageSize) throws BadParamsException, ResourceNotFoundException;
     Optional<NastavnikDTO> save(NastavnikCommand command) throws ResourceNotFoundException, InternalServerError;
     Optional<NastavnikDTO> update(NastavnikCommand command) throws ResourceNotFoundException;
+    List<NastavnikDTO> findByIdKolegij(Long idKolegij) throws ResourceNotFoundException;
 }

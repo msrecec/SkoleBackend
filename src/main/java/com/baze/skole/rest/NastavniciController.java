@@ -56,4 +56,9 @@ public class NastavniciController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/kolegiji")
+    List<NastavnikDTO> findNastavnikByIdKolegij(@RequestParam(name = "idKolegij") Long idKolegij) throws ResourceNotFoundException {
+        return this.nastavnikService.findByIdKolegij(idKolegij);
+    }
+
 }
