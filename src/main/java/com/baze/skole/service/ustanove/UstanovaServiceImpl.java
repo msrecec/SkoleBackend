@@ -129,11 +129,13 @@ public class UstanovaServiceImpl implements UstanovaService {
         ustanova.get().setDatumOsnutka(command.getDatumOsnutka());
         ustanova.get().setMjesto(mjesto.get(0));
 
-        ustanova = Optional.ofNullable(ustanoveRepositoryJpa.save(ustanova.get()));
+        ustanova = Optional.of(ustanoveRepositoryJpa.save(ustanova.get()));
 
         if(ustanova.isEmpty()) {
             throw new InternalServerError("there was an error on the server");
         }
+
+        System.out.println(ustanova);
 
         return ustanova.map(ustanoveMapper::mapUstanovaToDTO);
     }

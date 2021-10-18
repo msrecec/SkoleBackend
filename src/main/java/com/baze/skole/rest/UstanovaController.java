@@ -53,7 +53,7 @@ public class UstanovaController {
 
     @PutMapping
     ResponseEntity<UstanovaDTO> updateUstanova(@Valid @RequestBody UstanovaCommand command) throws ResourceNotFoundException, InternalServerError {
-        return this.ustanovaService.save(command)
+        return this.ustanovaService.update(command)
                 .map(ustanovaDTO -> ResponseEntity.ok().body(ustanovaDTO))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
