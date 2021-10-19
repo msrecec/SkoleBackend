@@ -1,7 +1,5 @@
-package com.baze.skole.command.ocjeneCommand;
+package com.baze.skole.command.ocjene;
 
-import com.baze.skole.dto.kolegiji.KolegijDTO;
-import com.baze.skole.dto.studenti.StudentDTO;
 import lombok.*;
 
 import javax.validation.constraints.*;

@@ -1,6 +1,8 @@
 package com.baze.skole.service.smjerovi;
 
+import com.baze.skole.command.smjer.SmjerCommand;
 import com.baze.skole.dto.smjerovi.SmjerDTO;
+import com.baze.skole.exception.InternalServerErrorException;
 import com.baze.skole.exception.ResourceNotFoundException;
 import com.baze.skole.mapping.mapper.smjerovi.SmjeroviMapper;
 import com.baze.skole.model.smjerovi.Smjer;
@@ -36,5 +38,29 @@ public class SmjerServiceImpl implements SmjerService{
         }
 
         return smjerovi.stream().map(mapper::mapSmjerToDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<SmjerDTO> addSmjerByUstanovaId(SmjerCommand command) throws ResourceNotFoundException, InternalServerErrorException {
+
+        Smjer smjer = Smjer.builder()
+                .naziv(command.getNaziv())
+                .build();
+
+        Optional<Ustanova> ustanova = ustanoveRepositoryJpa.findById(command.getIdUstanova());
+
+        if(ustanova.isEmpty()) {
+            throw new ResourceNotFoundException("ustanove with the given id was not found");
+        }
+
+        smjer.setUstanova(ustanova.get());
+
+        smjer = smjerRepositoryJpa.save(smjer);
+
+        if(smjer == null) {
+            throw new InternalServerErrorException("there was an error on the server");
+        }
+
+        return Optional.of(smjer).map(mapper::mapSmjerToDTO);
     }
 }
