@@ -136,4 +136,30 @@ public class NastavnikServiceImpl implements NastavnikService{
 
         return nastavnici.stream().map(nastavniciMapper::mapNastavnikToDTO).collect(Collectors.toList());
     }
+
+    @Override
+    public List<NastavnikDTO> ftsNastavnici(String input) throws BadRequestException, ResourceNotFoundException {
+
+        List<Nastavnik> nastavnici;
+
+        String[] split = input.split(" ");
+
+        if(split.length == 0) {
+            throw new BadRequestException("input string is empty");
+        } else if(split.length == 1) {
+            nastavnici = nastavniciRepositoryJpa.ftsNastavnici(split[0]);
+        } else if(split.length == 2) {
+            nastavnici = nastavniciRepositoryJpa.ftsNastavnici(split[0] + " " + split[1]);
+        } else if(split.length == 3) {
+            nastavnici = nastavniciRepositoryJpa.ftsNastavnici(split[0] + " " + split[1] + " " + split[2]);
+        } else {
+            throw new BadRequestException("the input string has more than 3 words");
+        }
+
+        if(nastavnici.isEmpty()) {
+            throw new ResourceNotFoundException("nastavnici were not found");
+        }
+
+        return nastavnici.stream().map(nastavniciMapper::mapNastavnikToDTO).collect(Collectors.toList());
+    }
 }

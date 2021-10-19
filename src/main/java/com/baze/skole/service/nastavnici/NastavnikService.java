@@ -6,6 +6,7 @@ import com.baze.skole.dto.nastavnici.NastavnikDTOPaginated;
 import com.baze.skole.exception.BadRequestException;
 import com.baze.skole.exception.InternalServerErrorException;
 import com.baze.skole.exception.ResourceNotFoundException;
+import com.baze.skole.model.nastavnici.Nastavnik;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,4 +18,5 @@ public interface NastavnikService {
     Optional<NastavnikDTO> save(NastavnikCommand command) throws ResourceNotFoundException, InternalServerErrorException;
     Optional<NastavnikDTO> update(NastavnikCommand command) throws ResourceNotFoundException;
     List<NastavnikDTO> findByIdKolegij(Long idKolegij) throws ResourceNotFoundException;
+    List<NastavnikDTO> ftsNastavnici(String input) throws BadRequestException, ResourceNotFoundException;
 }

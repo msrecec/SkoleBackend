@@ -61,4 +61,9 @@ public class NastavniciController {
         return this.nastavnikService.findByIdKolegij(idKolegij);
     }
 
+    @GetMapping("/fts")
+    List<NastavnikDTO> ftsNastavnici(@RequestParam(name = "input") String input) throws BadRequestException, ResourceNotFoundException {
+        return this.nastavnikService.ftsNastavnici(input);
+    }
+
 }
