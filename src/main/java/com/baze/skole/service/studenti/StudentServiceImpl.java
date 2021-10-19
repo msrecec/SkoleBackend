@@ -9,8 +9,10 @@ import com.baze.skole.exception.ResourceNotFoundException;
 import com.baze.skole.mapping.mapper.studenti.StudentMapper;
 import com.baze.skole.model.error.ErrorMessageConstants;
 import com.baze.skole.model.mjesta.Mjesto;
+import com.baze.skole.model.smjerovi.Smjer;
 import com.baze.skole.model.studenti.Student;
 import com.baze.skole.repository.mjesta.MjestaRepositoryJpa;
+import com.baze.skole.repository.smjerovi.SmjerRepositoryJpa;
 import com.baze.skole.repository.studenti.StudentRepositoryJpa;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -26,12 +28,14 @@ public class StudentServiceImpl implements StudentService {
 
     private final StudentRepositoryJpa studentRepositoryJpa;
     private final MjestaRepositoryJpa mjestaRepositoryJpa;
+    private final SmjerRepositoryJpa smjerRepositoryJpa;
     private final StudentMapper studentMapper;
     private static final Integer MAXIMUM_PAGE_SIZE = 100;
 
-    public StudentServiceImpl(StudentRepositoryJpa studentRepositoryJpa, MjestaRepositoryJpa mjestaRepositoryJpa, StudentMapper studentMapper) {
+    public StudentServiceImpl(StudentRepositoryJpa studentRepositoryJpa, MjestaRepositoryJpa mjestaRepositoryJpa, SmjerRepositoryJpa smjerRepositoryJpa, StudentMapper studentMapper) {
         this.studentRepositoryJpa = studentRepositoryJpa;
         this.mjestaRepositoryJpa = mjestaRepositoryJpa;
+        this.smjerRepositoryJpa = smjerRepositoryJpa;
         this.studentMapper = studentMapper;
     }
 
@@ -88,6 +92,12 @@ public class StudentServiceImpl implements StudentService {
 
         List<Mjesto> mjestaStanovanja = mjestaRepositoryJpa.findMjestoByPostbr(command.getPostBrStanovanja());
 
+        Optional<Smjer> smjer = smjerRepositoryJpa.findById(command.getIdSmjer());
+
+        if(smjer.isEmpty()) {
+            throw new ResourceNotFoundException("smjer with the given id was not found");
+        }
+
         if(mjestaPrebivalista.isEmpty() || mjestaStanovanja.isEmpty()) {
             throw new ResourceNotFoundException(ErrorMessageConstants.RESOURCE_NOT_FOUND.getMessage());
         }
@@ -95,6 +105,8 @@ public class StudentServiceImpl implements StudentService {
         student.setMjestoPrebivalista(mjestaPrebivalista.get(0));
 
         student.setMjestoStanovanja(mjestaStanovanja.get(0));
+
+        student.setSmjer(smjer.get());
 
         student = studentRepositoryJpa.save(student);
 

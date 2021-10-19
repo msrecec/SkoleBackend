@@ -36,5 +36,7 @@ public class StudentCommand {
     private Integer postBrPrebivalista;
     @NotNull(message = "postBrStanovanja must not be null")
     private Integer postBrStanovanja;
+    @NotNull(message = "id smjera must not be null")
+    private Long idSmjer;
 
 }

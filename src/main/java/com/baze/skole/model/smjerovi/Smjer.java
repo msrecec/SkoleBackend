@@ -1,6 +1,7 @@
 package com.baze.skole.model.smjerovi;
 
 import com.baze.skole.model.kolegiji.Kolegij;
+import com.baze.skole.model.studenti.Student;
 import com.baze.skole.model.ustanove.Ustanova;
 import lombok.*;
 
@@ -29,4 +30,6 @@ public class Smjer {
     private Ustanova ustanova;
     @OneToMany(targetEntity = Kolegij.class, mappedBy = "smjer")
     List<Kolegij> kolegiji;
+    @OneToMany(targetEntity = Student.class, mappedBy = "smjer")
+    List<Student> studenti;
 }

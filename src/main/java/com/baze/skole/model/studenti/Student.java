@@ -4,6 +4,7 @@ package com.baze.skole.model.studenti;
 import com.baze.skole.model.kolegiji.Kolegij;
 import com.baze.skole.model.mjesta.Mjesto;
 import com.baze.skole.model.ocjene.Ocjena;
+import com.baze.skole.model.smjerovi.Smjer;
 import lombok.*;
 
 import javax.persistence.*;
@@ -49,4 +50,7 @@ public class Student {
             inverseJoinColumns = {@JoinColumn(name = "id_kolegij")}
     )
     private List<Kolegij> kolegiji;
+    @ManyToOne()
+    @JoinColumn(name = "id_smjer", referencedColumnName = "id")
+    Smjer smjer;
 }

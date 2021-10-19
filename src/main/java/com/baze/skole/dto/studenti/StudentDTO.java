@@ -1,6 +1,7 @@
 package com.baze.skole.dto.studenti;
 
 import com.baze.skole.dto.mjesta.MjestoDTO;
+import com.baze.skole.dto.smjerovi.SmjerDTO;
 import lombok.*;
 
 import java.util.Date;
@@ -19,4 +20,5 @@ public class StudentDTO {
     private Date datumUpisa;
     private MjestoDTO mjestoPrebivalista;
     private MjestoDTO mjestoStanovanja;
+    private SmjerDTO smjerDTO;
 }
