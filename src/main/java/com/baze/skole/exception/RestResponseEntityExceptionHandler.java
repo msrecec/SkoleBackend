@@ -19,14 +19,14 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
     }
-    @ExceptionHandler(BadParamsException.class)
-    public ResponseEntity<ErrorMessage> badParamsException(BadParamsException exception, WebRequest request) {
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ErrorMessage> badParamsException(BadRequestException exception, WebRequest request) {
         ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST, exception.getMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
     }
-    @ExceptionHandler(InternalServerError.class)
-    public ResponseEntity<ErrorMessage> internalServerError(InternalServerError exception, WebRequest request) {
+    @ExceptionHandler(InternalServerErrorException.class)
+    public ResponseEntity<ErrorMessage> internalServerError(InternalServerErrorException exception, WebRequest request) {
         ErrorMessage message = new ErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage());
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(message);

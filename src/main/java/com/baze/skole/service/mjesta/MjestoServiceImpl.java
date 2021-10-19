@@ -2,13 +2,12 @@ package com.baze.skole.service.mjesta;
 
 import com.baze.skole.dto.mjesta.MjestoDTO;
 import com.baze.skole.dto.mjesta.MjestoDTOPaginated;
-import com.baze.skole.exception.BadParamsException;
+import com.baze.skole.exception.BadRequestException;
 import com.baze.skole.exception.ResourceNotFoundException;
 import com.baze.skole.mapping.mapper.mjesta.MjestaMapper;
 import com.baze.skole.model.error.ErrorMessageConstants;
 import com.baze.skole.model.mjesta.Mjesto;
 import com.baze.skole.repository.mjesta.MjestaRepositoryJpa;
-import com.baze.skole.repository.zupanije.ZupanijeRepositoryJpa;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -48,10 +47,10 @@ public class MjestoServiceImpl implements MjestoService{
     }
 
     @Override
-    public Optional<MjestoDTOPaginated> findByPage(Integer page, Integer pageSize) throws ResourceNotFoundException, BadParamsException {
+    public Optional<MjestoDTOPaginated> findByPage(Integer page, Integer pageSize) throws ResourceNotFoundException, BadRequestException {
 
         if(page < 0 || pageSize > MAXIMUM_PAGE_SIZE) {
-            throw new BadParamsException(ErrorMessageConstants.BAD_PARAMS.getMessage());
+            throw new BadRequestException(ErrorMessageConstants.BAD_PARAMS.getMessage());
         }
 
         PageRequest pageRequest = PageRequest.of(page, pageSize);

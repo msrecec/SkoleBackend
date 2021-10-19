@@ -3,8 +3,8 @@ package com.baze.skole.service.studenti;
 import com.baze.skole.command.studenti.StudentCommand;
 import com.baze.skole.dto.studenti.StudentDTO;
 import com.baze.skole.dto.studenti.StudentDTOPaginated;
-import com.baze.skole.exception.BadParamsException;
-import com.baze.skole.exception.InternalServerError;
+import com.baze.skole.exception.BadRequestException;
+import com.baze.skole.exception.InternalServerErrorException;
 import com.baze.skole.exception.ResourceNotFoundException;
 import com.baze.skole.mapping.mapper.studenti.StudentMapper;
 import com.baze.skole.model.error.ErrorMessageConstants;
@@ -53,10 +53,10 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Optional<StudentDTOPaginated> findByPage(Integer page, Integer pageSize) throws BadParamsException, ResourceNotFoundException {
+    public Optional<StudentDTOPaginated> findByPage(Integer page, Integer pageSize) throws BadRequestException, ResourceNotFoundException {
 
         if(page < 0 || pageSize > MAXIMUM_PAGE_SIZE) {
-            throw new BadParamsException(ErrorMessageConstants.BAD_PARAMS.getMessage());
+            throw new BadRequestException(ErrorMessageConstants.BAD_PARAMS.getMessage());
         }
 
         PageRequest pageRequest = PageRequest.of(page, pageSize);
@@ -75,7 +75,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Optional<StudentDTO> save(StudentCommand command) throws ResourceNotFoundException, InternalServerError {
+    public Optional<StudentDTO> save(StudentCommand command) throws ResourceNotFoundException, InternalServerErrorException {
 
         Student student = Student.builder()
                 .jmbag(command.getJmbag())
@@ -99,14 +99,14 @@ public class StudentServiceImpl implements StudentService {
         student = studentRepositoryJpa.save(student);
 
         if(student == null) {
-            throw new InternalServerError(ErrorMessageConstants.INTERNAL_SERVER_ERROR.getMessage());
+            throw new InternalServerErrorException(ErrorMessageConstants.INTERNAL_SERVER_ERROR.getMessage());
         }
 
         return Optional.of(studentMapper.mapStudentToDTO(student));
     }
 
     @Override
-    public Optional<StudentDTO> update(StudentCommand command) throws ResourceNotFoundException, InternalServerError {
+    public Optional<StudentDTO> update(StudentCommand command) throws ResourceNotFoundException, InternalServerErrorException {
 
         Optional<Student> student = studentRepositoryJpa.findById(command.getId());
 
@@ -134,7 +134,7 @@ public class StudentServiceImpl implements StudentService {
         student = Optional.ofNullable(studentRepositoryJpa.save(student.get()));
 
         if(student.isEmpty()) {
-            throw new InternalServerError(ErrorMessageConstants.INTERNAL_SERVER_ERROR.getMessage());
+            throw new InternalServerErrorException(ErrorMessageConstants.INTERNAL_SERVER_ERROR.getMessage());
         }
 
         return student.map(studentMapper::mapStudentToDTO);
@@ -147,6 +147,33 @@ public class StudentServiceImpl implements StudentService {
 
         if(studenti.isEmpty()) {
             throw new ResourceNotFoundException("studenti resource was not found");
+        }
+
+        return studenti.stream().map(studentMapper::mapStudentToDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<StudentDTO> fullTextSearch(String input) throws BadRequestException, ResourceNotFoundException {
+
+        List<Student> studenti;
+
+        System.out.println(input);
+
+        String[] split = input.split(" ");
+        if(split.length == 0) {
+            throw new BadRequestException("the input string provided is invalid");
+        } else if(split.length == 1) {
+            studenti = studentRepositoryJpa.ftsStudents(split[0]);
+        } else if(split.length == 2) {
+            studenti = studentRepositoryJpa.ftsStudents(split[0] + " " + split[1]);
+        } else if(split.length == 3) {
+            studenti = studentRepositoryJpa.ftsStudents(split[0] + " " + split[1] + " " + split[2]);
+        } else {
+            throw new BadRequestException("the provided string has more than 3 words");
+        }
+
+        if(studenti.isEmpty()) {
+            throw new ResourceNotFoundException("no students were found");
         }
 
         return studenti.stream().map(studentMapper::mapStudentToDTO).collect(Collectors.toList());

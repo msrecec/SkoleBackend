@@ -13,4 +13,6 @@ import java.util.List;
 public interface StudentRepositoryJpa extends JpaRepository<Student, Long> {
     @Query(value = "select * from studenti inner join ocjene on studenti.id = ocjene.id_student inner join kolegiji on ocjene.id_kolegij = kolegiji.id where kolegiji.id = :idKolegij", nativeQuery = true)
     List<Student> findStudentByIdKolegij(@Param("idKolegij") Long idKolegij);
+    @Query(value = "select * from studenti where to_tsvector(ime || ' ' || prezime || ' ' || jmbag) @@ plainto_tsquery(:string)", nativeQuery = true)
+    List<Student> ftsStudents(@Param("string") String string);
 }

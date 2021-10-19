@@ -3,8 +3,8 @@ package com.baze.skole.service.ustanove;
 import com.baze.skole.command.ustanove.UstanovaCommand;
 import com.baze.skole.dto.ustanove.UstanovaDTO;
 import com.baze.skole.dto.ustanove.UstanovaDTOPaginated;
-import com.baze.skole.exception.BadParamsException;
-import com.baze.skole.exception.InternalServerError;
+import com.baze.skole.exception.BadRequestException;
+import com.baze.skole.exception.InternalServerErrorException;
 import com.baze.skole.exception.ResourceNotFoundException;
 import com.baze.skole.mapping.mapper.ustanove.UstanoveMapper;
 import com.baze.skole.model.mjesta.Mjesto;
@@ -59,10 +59,10 @@ public class UstanovaServiceImpl implements UstanovaService {
     }
 
     @Override
-    public Optional<UstanovaDTOPaginated> findByPage(Integer page, Integer pageSize) throws BadParamsException, ResourceNotFoundException {
+    public Optional<UstanovaDTOPaginated> findByPage(Integer page, Integer pageSize) throws BadRequestException, ResourceNotFoundException {
 
         if(page < 0 || pageSize > 100) {
-            throw new BadParamsException("page should not be smaller than 0 and pageSize should not be larger than 100");
+            throw new BadRequestException("page should not be smaller than 0 and pageSize should not be larger than 100");
         }
 
         PageRequest pageRequest = PageRequest.of(page, pageSize);
@@ -81,7 +81,7 @@ public class UstanovaServiceImpl implements UstanovaService {
     }
 
     @Override
-    public Optional<UstanovaDTO> save(UstanovaCommand command) throws ResourceNotFoundException, InternalServerError {
+    public Optional<UstanovaDTO> save(UstanovaCommand command) throws ResourceNotFoundException, InternalServerErrorException {
 
         List<Mjesto> mjesto = mjestaRepositoryJpa.findMjestoByPostbr(command.getPostbr());
 
@@ -101,14 +101,14 @@ public class UstanovaServiceImpl implements UstanovaService {
         ustanova = ustanoveRepositoryJpa.save(ustanova);
 
         if(ustanova == null) {
-            throw new InternalServerError("there was an error when saving ustanova to the db");
+            throw new InternalServerErrorException("there was an error when saving ustanova to the db");
         }
 
         return Optional.of(ustanova).map(ustanoveMapper::mapUstanovaToDTO);
     }
 
     @Override
-    public Optional<UstanovaDTO> update(UstanovaCommand command) throws ResourceNotFoundException, InternalServerError {
+    public Optional<UstanovaDTO> update(UstanovaCommand command) throws ResourceNotFoundException, InternalServerErrorException {
 
         Optional<Ustanova> ustanova = ustanoveRepositoryJpa.findById(command.getId());
 
@@ -132,7 +132,7 @@ public class UstanovaServiceImpl implements UstanovaService {
         ustanova = Optional.of(ustanoveRepositoryJpa.save(ustanova.get()));
 
         if(ustanova.isEmpty()) {
-            throw new InternalServerError("there was an error on the server");
+            throw new InternalServerErrorException("there was an error on the server");
         }
 
         System.out.println(ustanova);

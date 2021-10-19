@@ -3,8 +3,8 @@ package com.baze.skole.service.nastavnici;
 import com.baze.skole.command.nastavnici.NastavnikCommand;
 import com.baze.skole.dto.nastavnici.NastavnikDTO;
 import com.baze.skole.dto.nastavnici.NastavnikDTOPaginated;
-import com.baze.skole.exception.BadParamsException;
-import com.baze.skole.exception.InternalServerError;
+import com.baze.skole.exception.BadRequestException;
+import com.baze.skole.exception.InternalServerErrorException;
 import com.baze.skole.exception.ResourceNotFoundException;
 import com.baze.skole.mapping.mapper.nastavnici.NastavniciMapper;
 import com.baze.skole.model.error.ErrorMessageConstants;
@@ -53,10 +53,10 @@ public class NastavnikServiceImpl implements NastavnikService{
     }
 
     @Override
-    public Optional<NastavnikDTOPaginated> findByPage(Integer page, Integer pageSize) throws BadParamsException, ResourceNotFoundException {
+    public Optional<NastavnikDTOPaginated> findByPage(Integer page, Integer pageSize) throws BadRequestException, ResourceNotFoundException {
 
         if(page < 0 || pageSize > MAXIMUM_PAGE_SIZE) {
-            throw new BadParamsException(ErrorMessageConstants.BAD_PARAMS.getMessage());
+            throw new BadRequestException(ErrorMessageConstants.BAD_PARAMS.getMessage());
         }
 
         PageRequest pageRequest = PageRequest.of(page, pageSize);
@@ -75,7 +75,7 @@ public class NastavnikServiceImpl implements NastavnikService{
     }
 
     @Override
-    public Optional<NastavnikDTO> save(NastavnikCommand command) throws ResourceNotFoundException, InternalServerError {
+    public Optional<NastavnikDTO> save(NastavnikCommand command) throws ResourceNotFoundException, InternalServerErrorException {
 
         Nastavnik nastavnik = Nastavnik.builder().jmbg(command.getJmbg()).ime(command.getIme()).prezime(command.getPrezime())
                 .adresa(command.getAdresa()).titulaIza(command.getTitulaIza()).titulaIspred(command.getTitulaIspred()).lozinka(command.getLozinka()).build();
@@ -91,7 +91,7 @@ public class NastavnikServiceImpl implements NastavnikService{
         nastavnik = nastavniciRepositoryJpa.save(nastavnik);
 
         if(nastavnik == null) {
-            throw new InternalServerError("there was an error with saving nastavnik");
+            throw new InternalServerErrorException("there was an error with saving nastavnik");
         }
 
         return Optional.of(nastavniciMapper.mapNastavnikToDTO(nastavnik));
