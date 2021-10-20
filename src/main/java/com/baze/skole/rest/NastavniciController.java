@@ -62,8 +62,10 @@ public class NastavniciController {
     }
 
     @GetMapping("/fts")
-    List<NastavnikDTO> ftsNastavnici(@RequestParam(name = "input") String input) throws BadRequestException, ResourceNotFoundException {
-        return this.nastavnikService.ftsNastavnici(input);
+    ResponseEntity<NastavnikDTOPaginated> ftsNastavnici(@RequestParam(name = "input") String input, @RequestParam(name = "page") Integer page, @RequestParam(name = "pageSize") Integer pageSize) throws BadRequestException, ResourceNotFoundException {
+        return this.nastavnikService.ftsNastavnici(input, page, pageSize)
+                .map((nastavnikDTOPaginated -> ResponseEntity.ok().body(nastavnikDTOPaginated)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 }

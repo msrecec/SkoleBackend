@@ -13,6 +13,7 @@ import com.baze.skole.model.nastavnici.Nastavnik;
 import com.baze.skole.repository.mjesta.MjestaRepositoryJpa;
 import com.baze.skole.repository.nastavnici.NastavniciRepositoryJpa;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -138,7 +139,15 @@ public class NastavnikServiceImpl implements NastavnikService{
     }
 
     @Override
-    public List<NastavnikDTO> ftsNastavnici(String input) throws BadRequestException, ResourceNotFoundException {
+    public Optional<NastavnikDTOPaginated> ftsNastavnici(String input, Integer page, Integer pageSize) throws BadRequestException, ResourceNotFoundException {
+        long totalPages;
+        long totalElements;
+
+        if(page < 0 || pageSize > 100) {
+            throw new BadRequestException("page must be larger than 0 and pageSize must be smaller or equals to 100");
+        }
+
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
 
         List<Nastavnik> nastavnici;
 
@@ -147,11 +156,17 @@ public class NastavnikServiceImpl implements NastavnikService{
         if(split.length == 0) {
             throw new BadRequestException("input string is empty");
         } else if(split.length == 1) {
-            nastavnici = nastavniciRepositoryJpa.ftsNastavnici(split[0]);
+            nastavnici = nastavniciRepositoryJpa.ftsNastavnici(split[0], pageRequest).getContent();
+            totalPages = nastavniciRepositoryJpa.ftsNastavnici(split[0], pageRequest).getTotalPages();
+            totalElements = nastavniciRepositoryJpa.ftsNastavnici(split[0], pageRequest).getTotalElements();
         } else if(split.length == 2) {
-            nastavnici = nastavniciRepositoryJpa.ftsNastavnici(split[0] + " " + split[1]);
+            nastavnici = nastavniciRepositoryJpa.ftsNastavnici(split[0] + " " + split[1], pageRequest).getContent();
+            totalPages = nastavniciRepositoryJpa.ftsNastavnici(split[0] + " " + split[1], pageRequest).getTotalPages();
+            totalElements = nastavniciRepositoryJpa.ftsNastavnici(split[0] + " " + split[1], pageRequest).getTotalElements();
         } else if(split.length == 3) {
-            nastavnici = nastavniciRepositoryJpa.ftsNastavnici(split[0] + " " + split[1] + " " + split[2]);
+            nastavnici = nastavniciRepositoryJpa.ftsNastavnici(split[0] + " " + split[1] + " " + split[2], pageRequest).getContent();
+            totalPages = nastavniciRepositoryJpa.ftsNastavnici(split[0] + " " + split[1] + " " + split[2], pageRequest).getTotalPages();
+            totalElements = nastavniciRepositoryJpa.ftsNastavnici(split[0] + " " + split[1] + " " + split[2], pageRequest).getTotalElements();
         } else {
             throw new BadRequestException("the input string has more than 3 words");
         }
@@ -160,6 +175,7 @@ public class NastavnikServiceImpl implements NastavnikService{
             throw new ResourceNotFoundException("nastavnici were not found");
         }
 
-        return nastavnici.stream().map(nastavniciMapper::mapNastavnikToDTO).collect(Collectors.toList());
+        return Optional.of(new NastavnikDTOPaginated(nastavnici.stream().map(nastavniciMapper::mapNastavnikToDTO).collect(Collectors.toList()),
+                totalPages, totalElements));
     }
 }

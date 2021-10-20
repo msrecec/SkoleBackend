@@ -18,5 +18,5 @@ public interface NastavnikService {
     Optional<NastavnikDTO> save(NastavnikCommand command) throws ResourceNotFoundException, InternalServerErrorException;
     Optional<NastavnikDTO> update(NastavnikCommand command) throws ResourceNotFoundException;
     List<NastavnikDTO> findByIdKolegij(Long idKolegij) throws ResourceNotFoundException;
-    List<NastavnikDTO> ftsNastavnici(String input) throws BadRequestException, ResourceNotFoundException;
+    Optional<NastavnikDTOPaginated> ftsNastavnici(String input, Integer page, Integer pageSize) throws BadRequestException, ResourceNotFoundException;
 }
