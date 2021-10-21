@@ -165,21 +165,34 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public List<StudentDTO> fullTextSearch(String input) throws BadRequestException, ResourceNotFoundException {
+    public Optional<StudentDTOPaginated> fullTextSearch(String input, Integer page, Integer pageSize) throws BadRequestException, ResourceNotFoundException {
+        long totalPages;
+        long totalElements;
+
+        if(page < 0 || pageSize > 100) {
+            throw new BadRequestException("page must be larger than 0 and pageSize must be smaller or equals to 100");
+        }
+
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
 
         List<Student> studenti;
 
-        System.out.println(input);
-
         String[] split = input.split(" ");
+
         if(split.length == 0) {
             throw new BadRequestException("the input string provided is invalid");
         } else if(split.length == 1) {
-            studenti = studentRepositoryJpa.ftsStudents(split[0]);
+            studenti = studentRepositoryJpa.ftsStudents(split[0], pageRequest).getContent();
+            totalPages = studentRepositoryJpa.ftsStudents(split[0], pageRequest).getTotalPages();
+            totalElements = studentRepositoryJpa.ftsStudents(split[0], pageRequest).getTotalElements();
         } else if(split.length == 2) {
-            studenti = studentRepositoryJpa.ftsStudents(split[0] + " " + split[1]);
+            studenti = studentRepositoryJpa.ftsStudents(split[0] + " " + split[1], pageRequest).getContent();
+            totalPages = studentRepositoryJpa.ftsStudents(split[0] + " " + split[1], pageRequest).getTotalPages();
+            totalElements = studentRepositoryJpa.ftsStudents(split[0] + " " + split[1], pageRequest).getTotalElements();
         } else if(split.length == 3) {
-            studenti = studentRepositoryJpa.ftsStudents(split[0] + " " + split[1] + " " + split[2]);
+            studenti = studentRepositoryJpa.ftsStudents(split[0] + " " + split[1] + " " + split[2], pageRequest).getContent();
+            totalPages = studentRepositoryJpa.ftsStudents(split[0] + " " + split[1] + " " + split[2], pageRequest).getTotalPages();
+            totalElements = studentRepositoryJpa.ftsStudents(split[0] + " " + split[1] + " " + split[2], pageRequest).getTotalElements();
         } else {
             throw new BadRequestException("the provided string has more than 3 words");
         }
@@ -188,6 +201,6 @@ public class StudentServiceImpl implements StudentService {
             throw new ResourceNotFoundException("no students were found");
         }
 
-        return studenti.stream().map(studentMapper::mapStudentToDTO).collect(Collectors.toList());
+        return Optional.of(new StudentDTOPaginated(studenti.stream().map(studentMapper::mapStudentToDTO).collect(Collectors.toList()), totalPages, totalElements));
     }
 }

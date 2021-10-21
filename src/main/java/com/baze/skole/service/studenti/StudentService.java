@@ -17,5 +17,5 @@ public interface StudentService {
     Optional<StudentDTO> save(StudentCommand command) throws ResourceNotFoundException, InternalServerErrorException;
     Optional<StudentDTO> update(StudentCommand command) throws ResourceNotFoundException, InternalServerErrorException;
     List<StudentDTO> findStudentiByIdKolegij(Long idKolegij) throws ResourceNotFoundException;
-    List<StudentDTO> fullTextSearch(String input) throws BadRequestException, ResourceNotFoundException;
+    Optional<StudentDTOPaginated> fullTextSearch(String input, Integer page, Integer pageSize) throws BadRequestException, ResourceNotFoundException;
 }

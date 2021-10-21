@@ -78,8 +78,12 @@ public class StudentController {
     }
 
     @GetMapping("/fts")
-    List<StudentDTO> fullTextSearchStudenti(@RequestParam(name = "input") String input) throws BadRequestException, ResourceNotFoundException {
-        return this.studentService.fullTextSearch(input);
+    ResponseEntity<StudentDTOPaginated> fullTextSearchStudenti(@RequestParam(name = "input") String input,
+                                                               @RequestParam(name = "page") Integer page,
+                                                               @RequestParam(name = "pageSize") Integer pageSize) throws BadRequestException, ResourceNotFoundException {
+        return this.studentService.fullTextSearch(input, page, pageSize)
+                .map(studentDTOPaginated -> ResponseEntity.ok().body(studentDTOPaginated))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 
