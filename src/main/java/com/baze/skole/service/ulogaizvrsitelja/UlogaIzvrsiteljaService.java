@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface UlogaIzvrsiteljaService {
 
-    Optional<UlogaIzvrsiteljaDTO> findUlogaIzvrsiteljaByNastavnikId(Long nastavnikId) throws ResourceNotFoundException;
+    Optional<UlogaIzvrsiteljaDTO> findUlogaIzvrsiteljaByNastavnikId(Long nastavnikId, Long kolegijId) throws ResourceNotFoundException;
 
 }

@@ -11,6 +11,6 @@ import java.util.List;
 
 @Repository
 public interface UlogaIzvrsiteljaRepositoryJpa extends JpaRepository<UlogaIzvrsitelja, Long> {
-    @Query(value = "select * from uloga_izvrsitelja inner join izvrsitelji on uloga_izvrsitelja.id = izvrsitelji.id_uloga_izvrsitelja inner join nastavnici on izvrsitelji.id_nastavnik = nastavnici.id where nastavnici.id = :idNastavnik", nativeQuery = true)
-    List<UlogaIzvrsitelja> findUlogaIzvrsiteljaByNastavnikId(@Param("idNastavnik") Long idNastavnik);
+    @Query(value = "select * from uloga_izvrsitelja inner join izvrsitelji on uloga_izvrsitelja.id = izvrsitelji.id_uloga_izvrsitelja  where izvrsitelji.id_nastavnik = :idNastavnik and izvrsitelji.id_kolegij = :idKolegij", nativeQuery = true)
+    List<UlogaIzvrsitelja> findUlogaIzvrsiteljaByNastavnikId(@Param("idNastavnik") Long idNastavnik, @Param("idKolegij") Long idKolegij);
 }

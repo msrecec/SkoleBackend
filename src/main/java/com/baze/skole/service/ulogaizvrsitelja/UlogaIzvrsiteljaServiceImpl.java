@@ -22,9 +22,9 @@ public class UlogaIzvrsiteljaServiceImpl implements UlogaIzvrsiteljaService {
     }
 
     @Override
-    public Optional<UlogaIzvrsiteljaDTO> findUlogaIzvrsiteljaByNastavnikId(Long nastavnikId) throws ResourceNotFoundException {
+    public Optional<UlogaIzvrsiteljaDTO> findUlogaIzvrsiteljaByNastavnikId(Long nastavnikId, Long kolegijId) throws ResourceNotFoundException {
 
-        List<UlogaIzvrsitelja> ulogaIzvrsitelja = ulogaIzvrsiteljaRepositoryJpa.findUlogaIzvrsiteljaByNastavnikId(nastavnikId);
+        List<UlogaIzvrsitelja> ulogaIzvrsitelja = ulogaIzvrsiteljaRepositoryJpa.findUlogaIzvrsiteljaByNastavnikId(nastavnikId, kolegijId);
 
         if(ulogaIzvrsitelja.isEmpty()) {
             throw new ResourceNotFoundException("uloga izvrsitelja resource was not found");

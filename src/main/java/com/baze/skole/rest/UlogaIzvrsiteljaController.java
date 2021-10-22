@@ -18,8 +18,8 @@ public class UlogaIzvrsiteljaController {
     }
 
     @GetMapping("/nastavnici")
-    ResponseEntity<UlogaIzvrsiteljaDTO> findUlogaIzvrsiteljaByNastavnikId(@RequestParam(name = "nastavnikId") Long nastavnikId) throws ResourceNotFoundException {
-        return this.ulogaIzvrsiteljaService.findUlogaIzvrsiteljaByNastavnikId(nastavnikId)
+    ResponseEntity<UlogaIzvrsiteljaDTO> findUlogaIzvrsiteljaByNastavnikId(@RequestParam(name = "nastavnikId") Long nastavnikId, @RequestParam(name = "kolegijId") Long kolegijId) throws ResourceNotFoundException {
+        return this.ulogaIzvrsiteljaService.findUlogaIzvrsiteljaByNastavnikId(nastavnikId, kolegijId)
                 .map((ulogaIzvrsiteljaDTO) -> ResponseEntity.ok().body(ulogaIzvrsiteljaDTO))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
