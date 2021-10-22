@@ -6,10 +6,11 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Date;
 
 @Entity
-@Table(name = "ocjena", schema = "public", uniqueConstraints = {
+@Table(name = "ocjene", schema = "public", uniqueConstraints = {
         @UniqueConstraint(name = "id", columnNames = "id")
 })
 @AllArgsConstructor
@@ -26,7 +27,7 @@ public class Ocjena {
     @Column(name = "datum_polaganja")
     private Date datumPolaganja;
     @Column(name = "vrijeme_polaganja")
-    private LocalDateTime vrijemePolaganja;
+    private OffsetDateTime vrijemePolaganja;
     @Column(name = "ocjena")
     private Integer ocjena;
     @ManyToOne()

@@ -5,6 +5,7 @@ import com.baze.skole.dto.studenti.StudentDTO;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -16,7 +17,7 @@ import java.util.Date;
 public class OcjenaDTO {
     private Long id;
     private Date datumPolaganja;
-    private LocalDateTime vrijemePolaganja;
+    private OffsetDateTime vrijemePolaganja;
     private Integer ocjena;
     private StudentDTO student;
     private KolegijDTO kolegij;

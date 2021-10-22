@@ -11,10 +11,18 @@ import com.baze.skole.model.studenti.Student;
 import com.baze.skole.repository.kolegiji.KolegijRepositoryJpa;
 import com.baze.skole.repository.ocjene.OcjenaRepositoryJpa;
 import com.baze.skole.repository.studenti.StudentRepositoryJpa;
+import org.hibernate.type.OffsetDateTimeType;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Service
 public class OcjenaServiceImpl implements OcjenaService{
@@ -46,10 +54,17 @@ public class OcjenaServiceImpl implements OcjenaService{
     @Override
     public Optional<OcjenaDTO> save(OcjenaCommand command) throws ResourceNotFoundException, InternalServerErrorException {
 
+        DateTimeFormatter fmt = new DateTimeFormatterBuilder()
+                .append(DateTimeFormatter.ISO_LOCAL_TIME)
+                .parseDefaulting(ChronoField.EPOCH_DAY, 0)
+                .toFormatter();
+
+        LocalDateTime localDateTime = LocalDateTime.parse(command.getVrijemePolaganja(), fmt);
+
         Ocjena ocjena = Ocjena.builder()
                 .ocjena(command.getOcjena())
                 .datumPolaganja(command.getDatumPolaganja())
-                .vrijemePolaganja(command.getVrijemePolaganja()).build();
+                .vrijemePolaganja(OffsetDateTime.of(localDateTime, ZoneOffset.UTC)).build();
 
         Optional<Kolegij> kolegij = kolegijRepositoryJpa.findById(command.getKolegijId());
 
