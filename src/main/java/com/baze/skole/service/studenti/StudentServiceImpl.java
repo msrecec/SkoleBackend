@@ -203,4 +203,24 @@ public class StudentServiceImpl implements StudentService {
 
         return Optional.of(new StudentDTOPaginated(studenti.stream().map(studentMapper::mapStudentToDTO).collect(Collectors.toList()), totalPages, totalElements));
     }
+
+    @Override
+    public Optional<StudentDTOPaginated> findStudentiByIdSmjerPaginated(Long idSmjer, Integer page, Integer pageSize) throws ResourceNotFoundException {
+        long totalPages;
+        long totalElements;
+
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
+
+        List<Student> studenti = studentRepositoryJpa.findStudentByIdSmjerPaginated(idSmjer, pageRequest).getContent();
+
+        if(studenti.isEmpty()) {
+            throw new ResourceNotFoundException("studenti resource was not found");
+        }
+
+        totalPages = studentRepositoryJpa.findStudentByIdSmjerPaginated(idSmjer, pageRequest).getTotalPages();
+
+        totalElements = studentRepositoryJpa.findStudentByIdSmjerPaginated(idSmjer, pageRequest).getTotalElements();
+
+        return Optional.of(new StudentDTOPaginated(studenti.stream().map(studentMapper::mapStudentToDTO).collect(Collectors.toList()), totalPages, totalElements));
+    }
 }

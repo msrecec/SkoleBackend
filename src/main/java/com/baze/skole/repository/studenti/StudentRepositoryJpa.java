@@ -19,4 +19,8 @@ public interface StudentRepositoryJpa extends JpaRepository<Student, Long> {
             countQuery = "select count(*) from studenti where to_tsvector(ime || ' ' || prezime || ' ' || jmbag) @@ plainto_tsquery(:string)",
             nativeQuery = true)
     Page<Student> ftsStudents(@Param("string") String string, Pageable page);
+    @Query(value = "select * from studenti inner join smjerovi on studenti.id_smjer = smjerovi.id where smjerovi.id = :idSmjer",
+            countQuery = "select count(*) from studenti inner join smjerovi on studenti.id_smjer = smjerovi.id where smjerovi.id = :idSmjer",
+            nativeQuery = true)
+    Page<Student> findStudentByIdSmjerPaginated(@Param("idSmjer") Long idSmjer, Pageable page);
 }
