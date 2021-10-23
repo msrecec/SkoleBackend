@@ -89,4 +89,34 @@ public class OcjenaServiceImpl implements OcjenaService{
 
         return Optional.of(ocjena).map(ocjeneMapper::mapOcjenaToDTO);
     }
+
+    @Override
+    public Optional<OcjenaDTO> update(OcjenaCommand command) throws ResourceNotFoundException, InternalServerErrorException {
+
+        DateTimeFormatter fmt = new DateTimeFormatterBuilder()
+                .append(DateTimeFormatter.ISO_LOCAL_TIME)
+                .parseDefaulting(ChronoField.EPOCH_DAY, 0)
+                .toFormatter();
+
+        LocalDateTime localDateTime = LocalDateTime.parse(command.getVrijemePolaganja(), fmt);
+
+        Optional<Ocjena> ocjena = ocjenaRepositoryJpa.findById(command.getId());
+
+        if(ocjena.isEmpty()) {
+            throw new ResourceNotFoundException("cannot find ocjena with the given id");
+        }
+
+        ocjena.get().setDatumPolaganja(command.getDatumPolaganja());
+        ocjena.get().setVrijemePolaganja(OffsetDateTime.of(localDateTime, ZoneOffset.UTC));
+        ocjena.get().setOcjena(command.getOcjena());
+
+        ocjena = Optional.of(ocjenaRepositoryJpa.save(ocjena.get()));
+
+        if(ocjena.isEmpty()) {
+            throw new InternalServerErrorException("there was an error when saving ocjena to the db");
+        }
+
+
+        return ocjena.map(ocjeneMapper::mapOcjenaToDTO);
+    }
 }

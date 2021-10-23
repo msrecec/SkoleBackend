@@ -4,6 +4,7 @@ import com.baze.skole.command.ocjene.OcjenaCommand;
 import com.baze.skole.dto.ocjene.OcjenaDTO;
 import com.baze.skole.exception.InternalServerErrorException;
 import com.baze.skole.exception.ResourceNotFoundException;
+import com.baze.skole.model.ocjene.Ocjena;
 import com.baze.skole.service.ocjene.OcjenaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,4 +37,10 @@ public class OcjenaController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @PutMapping
+    ResponseEntity<OcjenaDTO> updateOcjena(@RequestBody @Valid OcjenaCommand command) throws InternalServerErrorException, ResourceNotFoundException {
+        return ocjenaService.update(command)
+                .map(ocjenaDTO -> ResponseEntity.ok().body(ocjenaDTO))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }

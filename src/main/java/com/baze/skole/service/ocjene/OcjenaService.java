@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface OcjenaService {
     Optional<OcjenaDTO> findOcjenaByStudentIdAndKolegijId(Long studentId, Long kolegijId) throws ResourceNotFoundException;
     Optional<OcjenaDTO> save(OcjenaCommand command) throws ResourceNotFoundException, InternalServerErrorException;
+    Optional<OcjenaDTO> update(OcjenaCommand command) throws ResourceNotFoundException, InternalServerErrorException;
 }
