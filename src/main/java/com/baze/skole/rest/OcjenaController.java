@@ -6,6 +6,7 @@ import com.baze.skole.exception.InternalServerErrorException;
 import com.baze.skole.exception.ResourceNotFoundException;
 import com.baze.skole.model.ocjene.Ocjena;
 import com.baze.skole.service.ocjene.OcjenaService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,4 +44,11 @@ public class OcjenaController {
                 .map(ocjenaDTO -> ResponseEntity.ok().body(ocjenaDTO))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/id/{idOcjena}")
+    public void delete(@PathVariable(name = "idOcjena") Long idOcjena) {
+        ocjenaService.delete(idOcjena);
+    }
+
 }

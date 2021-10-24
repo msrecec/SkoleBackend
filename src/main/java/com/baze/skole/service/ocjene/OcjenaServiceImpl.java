@@ -119,4 +119,9 @@ public class OcjenaServiceImpl implements OcjenaService{
 
         return ocjena.map(ocjeneMapper::mapOcjenaToDTO);
     }
+
+    @Override
+    public void delete(Long idOcjena) {
+        ocjenaRepositoryJpa.deleteById(idOcjena);
+    }
 }
