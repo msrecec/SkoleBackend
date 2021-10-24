@@ -47,7 +47,7 @@ public class OcjenaController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping("/batch")
     List<OcjenaDTO> batchSaveOcjena(@RequestBody @Valid List<OcjenaCommand> commands) throws BadRequestException, InternalServerErrorException, ResourceNotFoundException {
         return ocjenaService.saveOcjene(commands);
     }
