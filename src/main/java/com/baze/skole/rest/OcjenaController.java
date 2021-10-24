@@ -2,6 +2,7 @@ package com.baze.skole.rest;
 
 import com.baze.skole.command.ocjene.OcjenaCommand;
 import com.baze.skole.dto.ocjene.OcjenaDTO;
+import com.baze.skole.exception.BadRequestException;
 import com.baze.skole.exception.InternalServerErrorException;
 import com.baze.skole.exception.ResourceNotFoundException;
 import com.baze.skole.model.ocjene.Ocjena;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/ocjene")
@@ -43,6 +45,11 @@ public class OcjenaController {
         return ocjenaService.update(command)
                 .map(ocjenaDTO -> ResponseEntity.ok().body(ocjenaDTO))
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    List<OcjenaDTO> batchSaveOcjena(@RequestBody @Valid List<OcjenaCommand> commands) throws BadRequestException, InternalServerErrorException, ResourceNotFoundException {
+        return ocjenaService.saveOcjene(commands);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
