@@ -86,11 +86,12 @@ public class StudentController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/smjerovi/id/{idSmjer}")
+    @GetMapping("/kolegiji/{idKolegij}/smjerovi/id/{idSmjer}")
     ResponseEntity<StudentDTOPaginated> findStudentByIdSmjer(@PathVariable(name = "idSmjer") Long idSmjer,
+                                                             @PathVariable(name = "idKolegij") Long idKolegij,
                                                              @RequestParam(name = "page") Integer page,
                                                              @RequestParam(name = "pageSize") Integer pageSize) throws ResourceNotFoundException {
-        return this.studentService.findStudentiByIdSmjerPaginated(idSmjer, page, pageSize)
+        return this.studentService.findStudentiByIdSmjerPaginated(idSmjer, idKolegij, page, pageSize)
                 .map(studentDTOPaginated -> ResponseEntity.ok().body(studentDTOPaginated))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
