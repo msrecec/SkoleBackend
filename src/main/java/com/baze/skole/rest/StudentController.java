@@ -86,7 +86,7 @@ public class StudentController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/kolegiji/{idKolegij}/smjerovi/id/{idSmjer}")
+    @GetMapping("/kolegiji/id/{idKolegij}/smjerovi/id/{idSmjer}")
     ResponseEntity<StudentDTOPaginated> findStudentByIdSmjer(@PathVariable(name = "idSmjer") Long idSmjer,
                                                              @PathVariable(name = "idKolegij") Long idKolegij,
                                                              @RequestParam(name = "page") Integer page,
