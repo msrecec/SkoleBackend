@@ -1,4 +1,4 @@
-package com.baze.skole.rest;
+package com.baze.skole.rest.controller;
 
 import com.baze.skole.command.kolegiji.KolegijCommand;
 import com.baze.skole.dto.kolegiji.KolegijDTO;

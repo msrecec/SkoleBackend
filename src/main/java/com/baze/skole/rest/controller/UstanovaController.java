@@ -1,4 +1,4 @@
-package com.baze.skole.rest;
+package com.baze.skole.rest.controller;
 
 import com.baze.skole.command.ustanove.UstanovaCommand;
 import com.baze.skole.dto.ustanove.UstanovaDTO;

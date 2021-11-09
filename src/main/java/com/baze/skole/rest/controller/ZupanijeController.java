@@ -1,4 +1,4 @@
-package com.baze.skole.rest;
+package com.baze.skole.rest.controller;
 
 import com.baze.skole.dto.zupanije.ZupanijaDTO;
 import com.baze.skole.exception.ResourceNotFoundException;

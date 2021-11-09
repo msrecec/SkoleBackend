@@ -1,4 +1,4 @@
-package com.baze.skole.rest;
+package com.baze.skole.rest.controller;
 
 import com.baze.skole.command.ocjene.OcjenaCommand;
 import com.baze.skole.dto.ocjene.OcjenaDTO;
